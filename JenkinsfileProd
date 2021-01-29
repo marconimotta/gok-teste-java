@@ -1,0 +1,30 @@
+def label = "slave-${UUID.randomUUID().toString()}"
+def BRANCH_NAME = scm.branches[0].name
+def JOB_NAME = "template-api"
+podTemplate(label: label, containers: [
+    containerTemplate(name: 'helm', image: 'gcr.io/cuidado-digital-covid/alpine', ttyEnabled: true)
+  ],
+  volumes: [
+    hostPathVolume(hostPath: '/var/run/docker.sock', mountPath: '/var/run/docker.sock')
+  ],
+  envVars: [
+    envVar(key: 'TZ', value: 'America/Sao_Paulo')
+  ]
+  ){
+  node(label) {
+        ansiColor('xterm') {
+          timestamps {
+                stage('Deploy') {
+                  checkout scm 'https://bitbucket.org/gok/template-api.git'
+                  container('helm') {
+                    echo "##################### HELM INSTALL #####################"
+                    sh 'helm init --client-only'
+                    echo '##################### CHANGE VALUES.YAML #####################'
+                    //sh 'helm del --purge cucoops-api'
+                    sh 'helm upgrade --install template-api-production --namespace production --set image.repository=gcr.io/cuidado-digital-covid/template-api-production --set image.tag=$VERSION ./chart/production'
+                  }
+                }
+            }
+        }
+    }
+}

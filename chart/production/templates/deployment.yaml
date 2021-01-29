@@ -1,0 +1,169 @@
+apiVersion: apps/v1beta2
+kind: Deployment
+metadata:
+  name: {{ include "template-api.fullname" . }}
+  namespace: production
+  labels:
+    app: {{ include "template-api.name" . }}
+    chart: {{ include "template-api.chart" . }}
+    release: {{ .Release.Name }}
+    heritage: {{ .Release.Service }}
+spec:
+  replicas: {{ .Values.replicaCount }}
+  selector:
+    matchLabels:
+      app: {{ include "template-api.name" . }}
+      release: {{ .Release.Name }}
+  template:
+    metadata:
+      labels:
+        app: {{ include "template-api.name" . }}
+        release: {{ .Release.Name }}
+    spec:
+      minReadySeconds: 5
+      strategy:
+        type: RollingUpdate
+        rollingUpdate:
+          maxUnavailable: 50%
+          maxSurge: 50%
+      containers:
+        - name: {{ .Chart.Name }}
+          image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          ports:
+            - name: http
+              containerPort: 8080
+              protocol: TCP
+          resources:
+            limits:
+              cpu: {{ .Values.resources.limits.cpu }}
+              memory: {{ .Values.resources.limits.memory }}
+            requests:
+              cpu: {{ .Values.resources.requests.cpu }}
+              memory: {{ .Values.resources.requests.memory }}
+          livenessProbe:
+            httpGet:
+              path: {{ .Values.image.health }}
+              port: 8080
+            initialDelaySeconds: 90
+            timeoutSeconds: 15
+          readinessProbe:
+            httpGet:
+              path: {{ .Values.image.health }}
+              port: 8080
+            initialDelaySeconds: 90
+            timeoutSeconds: 15
+          env:
+            - name: JAVA_OPTS
+              value: -Dspring.profiles.active=production -Xms128m -Xmx512m -Duser.timezone=America/Sao_Paulo
+            - name: spring.datasource.url
+              valueFrom:
+                secretKeyRef:
+                  name: cdc-credencials
+                  key: spring.datasource.url
+            - name: spring.datasource.username
+              valueFrom:
+                secretKeyRef:
+                  name: cdc-credencials
+                  key: spring.datasource.username
+            - name: spring.datasource.password
+              valueFrom:
+                secretKeyRef:
+                  name: cdc-credencials
+                  key: spring.datasource.password
+            - name: spring.redis.host
+              valueFrom:
+                secretKeyRef:
+                  name: cdc-credencials
+                  key: spring.redis.host
+            - name: spring.redis.port
+              valueFrom:
+                secretKeyRef:
+                  name: cdc-credencials
+                  key: spring.redis.port
+            - name: spring.redis.password
+              valueFrom:
+                secretKeyRef:
+                  name: cdc-credencials
+                  key: spring.redis.password
+            - name: jwt.token.secret
+              valueFrom:
+                secretKeyRef:
+                  name: cdc-credencials
+                  key: jwt.token.secret
+            - name: jwt.token.audience
+              valueFrom:
+                secretKeyRef:
+                  name: cdc-credencials
+                  key: jwt.token.audience
+            - name: jwt.token.expiracy
+              valueFrom:
+                secretKeyRef:
+                  name: cdc-credencials
+                  key: jwt.token.expiracy
+            - name: google.host
+              valueFrom:
+                secretKeyRef:
+                  name: cdc-credencials
+                  key: google.host
+            - name: google.secret
+              valueFrom:
+                secretKeyRef:
+                  name: cdc-credencials
+                  key: google.secret
+            - name: crypto.algorithm
+              valueFrom:
+                secretKeyRef:
+                  name: cdc-credencials
+                  key: crypto.algorithm
+            - name: sms.host
+              valueFrom:
+                secretKeyRef:
+                  name: cdc-credencials
+                  key: sms.host
+            - name: sms.token
+              valueFrom:
+                secretKeyRef:
+                  name: cdc-credencials
+                  key: sms.token
+            - name: sms.from
+              valueFrom:
+                secretKeyRef:
+                  name: cdc-credencials
+                  key: sms.from
+            - name: sms.message
+              valueFrom:
+                secretKeyRef:
+                  name: cdc-credencials
+                  key: sms.message
+            - name: sms.aggregateId
+              valueFrom:
+                secretKeyRef:
+                  name: cdc-credencials
+                  key: sms.aggregateId
+            - name: sms.callback
+              valueFrom:
+                secretKeyRef:
+                  name: cdc-credencials
+                  key: sms.callback
+            - name: mobile.token.expiration
+              valueFrom:
+                secretKeyRef:
+                  name: cdc-credencials
+                  key: mobile.token.expiration
+            - name: mobile.token_expiration_type
+              valueFrom:
+                secretKeyRef:
+                  name: cdc-credencials
+                  key: mobile.token_expiration_type
+            - name: mobile.token.chars
+              valueFrom:
+                secretKeyRef:
+                  name: cdc-credencials
+                  key: mobile.token.chars
+            - name: mobile.token.length
+              valueFrom:
+                secretKeyRef:
+                  name: cdc-credencials
+                  key: mobile.token.length
+            

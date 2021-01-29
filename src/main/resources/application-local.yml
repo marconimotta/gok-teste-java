@@ -1,0 +1,41 @@
+spring:
+    datasource:
+        driver-class-name: org.postgresql.Driver
+        password: postgres
+        url: jdbc:postgresql://localhost:5432/teste
+        username: postgres
+    jackson:
+        serialization:
+            FAIL_ON_EMPTY_BEANS: false
+    jpa:
+        database-platform: org.hibernate.dialect.PostgreSQLDialect
+        generate-ddl: true
+        hibernate:
+            naming-strategy: org.hibernate.cfg.EJB3NamingStrategy
+        properties:
+            hibernate:
+                current_session_context_class: org.springframework.orm.hibernate5.SpringSessionContext
+                ddl-auto: update
+                default_schema: public
+                dialect: org.hibernate.dialect.PostgreSQLDialect
+                enable_lazy_load_no_trans: true
+                format_sql: true
+                show_sql: true
+                temp:
+                    use_jdbc_metadata_defaults: false
+                type: trace
+                use_sql_comments: false
+        show-sql: true
+    profiles:
+        active: local
+
+management:
+    security:
+        enabled: true
+        roles: ADMIN
+security:
+    basic:
+        enabled: true
+    user:
+        name: admin
+        password: admin
