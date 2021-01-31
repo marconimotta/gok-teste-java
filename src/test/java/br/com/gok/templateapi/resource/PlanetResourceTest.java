@@ -72,40 +72,4 @@ public class PlanetResourceTest {
 		Mockito.verify(service, VerificationModeFactory.atLeastOnce()).findById(ArgumentMatchers.anyLong());
 	}
 
-	// @Test
-	// public void whenFindByIdThenReturnNotFound() throws Exception {
-	// Mockito.when(service.findById(1L)).thenReturn(Optional.empty());
-	//
-	// mockMvc.perform(MockMvcRequestBuilders.get("/places/{id}", 1L).accept(MediaType.APPLICATION_JSON))
-	// .andExpect(MockMvcResultMatchers.status().isNotFound()).andDo(MockMvcResultHandlers.print()).andReturn().getResponse();
-	//
-	// Mockito.verify(service, VerificationModeFactory.atLeastOnce()).findById(ArgumentMatchers.anyLong());
-	// }
-	//
-	// @Test
-	// public void whenFindByNameThenReturnOk() throws Exception {
-	// Mockito.when(service.findByName("Butanta")).thenReturn(Arrays.asList(place));
-	//
-	// mockMvc.perform(MockMvcRequestBuilders.get("/places/?name={name}", "Butanta").accept(MediaType.APPLICATION_JSON))
-	// .andExpect(MockMvcResultMatchers.status().isOk()).andDo(MockMvcResultHandlers.print())
-	// .andExpect(MockMvcResultMatchers.jsonPath("$", Matchers.hasSize(1)))
-	// .andExpect(MockMvcResultMatchers.jsonPath("$[0].name", Matchers.is("Butanta")))
-	// .andExpect(MockMvcResultMatchers.jsonPath("$[0].slug", Matchers.is("bt")))
-	// .andExpect(MockMvcResultMatchers.jsonPath("$[0].city", Matchers.is("Sao Paulo")))
-	// .andExpect(MockMvcResultMatchers.jsonPath("$[0].state", Matchers.is("SP"))).andReturn().getResponse();
-	//
-	// Mockito.verify(service, VerificationModeFactory.atLeastOnce()).findByName(ArgumentMatchers.anyString());
-	// }
-	//
-	// @Test
-	// public void whenFindByNameThenReturnNotFound() throws Exception {
-	//
-	// Mockito.when(service.findByName("Cotia")).thenReturn(Collections.emptyList());
-	//
-	// mockMvc.perform(MockMvcRequestBuilders.get("/places/?name={name}", "Cotia").accept(MediaType.APPLICATION_JSON))
-	// .andExpect(MockMvcResultMatchers.status().isNotFound()).andDo(MockMvcResultHandlers.print()).andReturn().getResponse();
-	//
-	// Mockito.verify(service, VerificationModeFactory.atLeastOnce()).findByName(ArgumentMatchers.anyString());
-	// }
-
 }
