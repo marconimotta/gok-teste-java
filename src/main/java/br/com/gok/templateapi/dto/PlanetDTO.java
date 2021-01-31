@@ -1,4 +1,3 @@
-
 package br.com.gok.templateapi.dto;
 
 import java.util.List;

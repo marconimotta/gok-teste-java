@@ -5,7 +5,5 @@ public class Constants {
 
 	public static final String BAD_REQUEST_NOT_VALID = "Field %s: not valid, value %s";
 
-	public static final String RESOURCE_NOT_FOUND = "%s not found";
-
 	public static final String CONVERSION_ERROR = "Could not convert value to type specified";
 }

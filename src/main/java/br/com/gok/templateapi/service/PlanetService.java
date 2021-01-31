@@ -39,10 +39,14 @@ public class PlanetService {
 		return repository.save(planet);
 	}
 
-	public void delete(@NotNull final Long id) {
+	public boolean delete(@NotNull final Long id) {
 		repository.deleteById(id);
+		return !repository.existsById(id);
 	}
 
+	/**
+	 * Method performs the import of the Swapi Star Wars API planets
+	 */
 	@Transactional
 	public void importPlanetStarWars() {
 		listPlanetsAPIStarWars().forEach(planetDTO -> {
@@ -55,6 +59,12 @@ public class PlanetService {
 		});
 	}
 
+	/**
+	 *
+	 * Lists the Swapi Star Wars API planets.
+	 *
+	 * @return List
+	 */
 	public List<PlanetDTO> listPlanetsAPIStarWars() {
 		Long page = 1L;
 		PlanetStarWarsRequestDTO planetRequest;
@@ -67,6 +77,14 @@ public class PlanetService {
 		return listPlanets;
 	}
 
+	/**
+	 *
+	 * List the planets by population range.
+	 *
+	 * @param populationMin
+	 * @param populationMax
+	 * @return List
+	 */
 	public List<Planet> listPlanetsByPopulation(final Long populationMin, final Long populationMax) {
 		return repository.findByPopulationBetween(populationMin, populationMax);
 	}
@@ -75,6 +93,13 @@ public class PlanetService {
 		return repository.findAll();
 	}
 
+	/**
+	 *
+	 * List the planets by the criteria contained in the name field.
+	 *
+	 * @param name
+	 * @return List
+	 */
 	public List<Planet> searchPlanetByNameLike(final String name) {
 		return repository.findByNameLike(name);
 	}
